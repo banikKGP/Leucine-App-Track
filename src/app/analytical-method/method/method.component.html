@@ -1,0 +1,4 @@
+<ul class="list-group">
+  <li class="list-group-item"><button class="btn" (click)="createAnalyticalMethod()"><i class="fa fa-plus-circle"></i> Create a new method </button></li>
+  <li class="list-group-item" *ngFor="let method of analyticalMethods"><button class="btn" (click)="editAnalyticalMethod(method)">{{method}}</button></li>
+</ul>

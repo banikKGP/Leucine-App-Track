@@ -1,0 +1,180 @@
+<form>
+  <!-- Analytical Mthod Id -->
+  <div class="form-group">
+    <label for="inputMethodId">Analytical Method Id</label>
+    <input id="inputMethodId" required type="text" class="form-control" placeholder="analytical method id"
+      [(ngModel)]="curMethodData.analyticalMethodId" name="analyticalMethodId">
+  </div>
+  <!-- Target Residue type -->
+  <div class="form-group">
+    <label for="residue-type">Target Residue Type</label>
+    <div id="residue-type" class="col-md-12">
+      <select class="form-control" (change)="selectedSubstance = $event.target.value">
+        <option *ngFor="let substance of Substances; index as i" [value]="substance">{{substance}}</option>
+      </select></div>
+  </div>
+  <!-- LOD and LOQ (API &  Cleaning angent) -->
+  <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <p>LOD (in ppm)</p>
+        <input type="number" class="form-control" [(ngModel)]="curMethodData.LOD" name="LOD">
+      </div>
+      <div class="form-group col-md-6">
+        <p>LOQ (in ppm)</p>
+        <input type="number" class="form-control" [(ngModel)]="curMethodData.LOQ" name="LOQ">
+      </div>
+    </div>
+  </div>
+  <!-- TNTC and TFTC limits (Bioburden & Endotoxin) -->
+  <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
+    <div class="form-group">
+      <label for="used-method">Method used</label>
+      <input type="text" class="form-control">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <div class="col-md-12">
+          <label for="t-limit">Define TNTC and TFTC Limits?</label>
+          <div id="t-limit" class="row">
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" value="tLimitChecked" [checked]="tLimitChecked" (change)="tLimitChecked = true" />
+                Yes
+              </label>
+            </div>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" value="tLimitChecked" [checked]="!tLimitChecked" (change)="tLimitChecked = false" />
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row" *ngIf="tLimitChecked">
+      <div class=" form-group col-md-6">
+        <label for="TNTC-limit">TNTC Limit (in CFU)</label>
+        <input id="TNTC-limit" class="form-control" type="number">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="TFTC-limit">TFTC Limit (in CFU)</label>
+        <input id="TFTC-limit" class="form-control" type="number">
+      </div>
+    </div>
+  </div>
+  <!-- Swab Configurartion -->
+  <button type="button" class="btn col-md-12" [ngClass]="isSwabCollapsed ? 'lc-btn' : 'lc-btn-collapse'"
+    (click)="toggleSwab()" [attr.aria-expanded]="!isSwabCollapsed" aria-controls="collapseBasic"><i class="fa "
+      [ngClass]="isSwabCollapsed ? 'fa-plus-circle' : 'fa-minus-circle'"></i> {{swabConfigure}} swab sampling parameters
+  </button>
+  <hr>
+  <div [collapse]="isSwabCollapsed" class="card card-block card-header">
+    <!-- Swab config for API & Cleaning angent -->
+    <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
+      <div class="form-group">
+        <p>Method used</p>
+        <input type="text" class="form-control" placeholder="method" [(ngModel)]="curMethodData.SwabSample.usedMethod" name="swabMethod">
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <p>Solvent name</p>
+          <input type="text" class="form-control" placeholder="Solvent name" [(ngModel)]="curMethodData.SwabSample.solventName" name="swabSolventName">
+        </div>
+        <div class="form group col-md-6">
+          <p>Solvent quantity (ml)</p>
+          <input type="text" class="form-control" placeholder="solvent quantity" [(ngModel)]="curMethodData.SwabSample.solventQuantity" name="swabSolventQuantity">
+        </div>
+      </div>
+      <div class="form-group">
+        <p>Default recovery (%)</p>
+        <input type="text" class="form-control" placeholder="default recovery" [(ngModel)]="curMethodData.SwabSample.defaultRecovery" name="swabDefaultRecovery">
+      </div>
+    </div>
+    <!-- Swab config for Bioburden & Endotoxin -->
+    <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
+      <div class="form-row">
+        <div class=" form-group col-md-6">
+          <label for="solvent-vol">Use Recovery for Swab</label>
+          <div id="t-limit" class="row">
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" value="swabLimitChecked" [checked]="swabLimitChecked"
+                  (change)="swabLimitChecked = true" />
+                Yes
+              </label>
+            </div>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" value="swabLimitChecked" [checked]="!swabLimitChecked"
+                  (change)="swabLimitChecked = false" />
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6" *ngIf="swabLimitChecked">
+          <label for="solvent-vol">Recovery (%)</label>
+          <input id="solvent-vol" class="form-control" type="number">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Rinse Configurartion -->
+  <button type="button" class="btn col-md-12" [ngClass]="isRinseCollapsed ? 'lc-btn' : 'lc-btn-collapse'"
+    (click)="toggleRinse()" [attr.aria-expanded]="!isRinseCollapsed" aria-controls="collapseBasic"><i class="fa"
+      [ngClass]="isRinseCollapsed ? 'fa-plus-circle' : 'fa-minus-circle'"></i> {{rinseConfigure}} rinse sampling
+    parameters
+  </button>
+  <hr>
+  <div id="collapseBasic" [collapse]="isRinseCollapsed" class="card card-block card-header">
+    <!-- Rinse config for API & Cleaning angent -->
+    <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
+      <div class="form-group">
+        <p>Method used</p>
+        <input type="text" class="form-control" placeholder="method" [(ngModel)]="curMethodData.RinseSample.usedMethod" name="RinseMethod">
+      </div>
+      <div class="form-group">
+        <p>Default recovery (%)</p>
+        <input type="text" class="form-control" placeholder="default recovery" [(ngModel)]="curMethodData.RinseSample.defaultRecovery" name="RinseDefaultRecovery">
+      </div>
+    </div>
+    <!-- Rinse config for Bioburden & Endotoxin -->
+    <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
+      <div class="form-group">
+        <label for="solvent-vol">Solvent Volume</label>
+        <input id="solvent-vol" class="form-control" type="number">
+      </div>
+      <div class="form-row">
+        <div class=" form-group col-md-6">
+          <label for="solvent-vol">Use Recovery for Rinse</label>
+          <div id="t-limit" class="row">
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" value="rinseLimitChecked" [checked]="rinseLimitChecked"
+                  (change)="rinseLimitChecked = true" />
+                Yes
+              </label>
+            </div>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" value="rinseLimitChecked" [checked]="!rinseLimitChecked"
+                  (change)="rinseLimitChecked = false" />
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6" *ngIf="rinseLimitChecked">
+          <label for="solvent-vol">Default Recovery (%)</label>
+          <input id="solvent-vol" class="form-control" type="number">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <p>Reason</p>
+    <input type="text" class="form-control">
+  </div>
+</form>
