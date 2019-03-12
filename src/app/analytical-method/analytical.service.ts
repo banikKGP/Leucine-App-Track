@@ -6,6 +6,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 export class AnalyticalService {
   @Output() edit: EventEmitter<any> = new EventEmitter();
   @Output() create: EventEmitter<any> = new EventEmitter();
+  @Output() updateStorage: EventEmitter<any> = new EventEmitter();
   constructor() { }
 
   editMethodData(method){
@@ -13,5 +14,8 @@ export class AnalyticalService {
   }
   createMethodData(){
     this.create.emit();
+  }
+  updateLocalStorage(){
+    this.updateStorage.emit();
   }
 }

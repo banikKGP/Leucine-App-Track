@@ -19,16 +19,19 @@ export class MethodComponent implements OnInit {
   // }
 
   ngOnInit() {
+    this.analyticalService.updateStorage.subscribe(()=>{
+      this.analyticalMethods = this.getAnalyticalMethods();
+    })
     this.analyticalMethods = this.getAnalyticalMethods();
     this.createAnalyticalMethod();
   }
 
   getAnalyticalMethods(){
-    return [
-      'AMX11/11CH/001',
-      'AMX11/11CH/002',
-      'AMX11/11CH/003'
-    ]
+    let keys = [];
+    for (let i=0; i<localStorage.length; i++){
+      keys.push(localStorage.key(i));
+   }
+    return keys;
   }
 
   editAnalyticalMethod(method: any){
