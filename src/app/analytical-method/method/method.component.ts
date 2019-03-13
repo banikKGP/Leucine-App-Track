@@ -33,7 +33,7 @@ export class MethodComponent implements OnInit {
     const keys = [];
     for (let i = 0; i < localStorage.length; i++) {
       keys.push(localStorage.key(i));
-   }
+    }
     return keys;
   }
 
@@ -43,6 +43,11 @@ export class MethodComponent implements OnInit {
 
   createAnalyticalMethod() {
     this.analyticalService.createMethodData();
+  }
+
+  removeMethod(method) {
+    localStorage.removeItem(method);
+    this.analyticalService.updateLocalStorage();
   }
 
 }

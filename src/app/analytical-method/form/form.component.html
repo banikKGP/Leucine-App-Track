@@ -277,6 +277,6 @@
   <div class="btn-group-justified" style="padding-top: 8px">
     <button [disabled]="!f.form.valid" type="submit" *ngIf="isCreate" class="btn btn-primary pull-right">Save</button>
     <button [disabled]="!f.form.valid" type="submit" *ngIf="!isCreate" class="btn btn-primary pull-right">Update</button>
-    <button class="btn btn-primary pull-left" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary pull-left" (click)="cancel()">Cancel</button>
   </div>
 </form>
