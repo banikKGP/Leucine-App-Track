@@ -1,278 +1,282 @@
-<form name="Leucine-Form" #f='ngForm' (ngSubmit)="save()" novalidate [style.height.px]="height">
+<form name="Leucine-Form" #f='ngForm' (ngSubmit)="save()" novalidate>
   <!-- Analytical Mthod Id -->
-  <div class="form-group">
-    <label for="inputMethodId">Analytical Method Id</label>
-    <input [disabled]="!isCreate" id="inputMethodId" required type="text" class="form-control" placeholder="analytical method id"
-      [(ngModel)]="curMethodData.analyticalMethodId" name="analyticalMethodId">
-  </div>
-  <!-- Target Residue type -->
-  <div class="form-group">
-    <label for="residue-type">Target Residue Type</label>
-    <div class="select-dropdown" dropdown>
-      <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle" aria-controls="dropdown-basic"
-        [(ngModel)]="selectedSubstance" name="substance">
-      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-        <li *ngFor="let substance of Substances; index as i" role="menuitem"><a class="dropdown-item" (click)="selectResidue(substance)">{{substance}}</a></li>
-      </ul>
-    </div>
-  </div>
-  <!-- LOD and LOQ (API &  Cleaning angent) -->
-  <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <p>LOD (in ppm)</p>
-        <input type="number" class="form-control" [(ngModel)]="curMethodData.LOD" name="LOD" required>
-      </div>
-      <div class="form-group col-md-6">
-        <p>LOQ (in ppm)</p>
-        <input type="number" class="form-control" [(ngModel)]="curMethodData.LOQ" name="LOQ" required>
-      </div>
-    </div>
-  </div>
-  <!-- TNTC and TFTC limits (Bioburden & Endotoxin) -->
-  <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
+  <div class="scrollable-content" [style.height.px]="height">
     <div class="form-group">
-      <label for="used-method">Method used</label>
-      <input type="text" class="form-control" [(ngModel)]="curMethodData.usedMethod" name="usedMethod" required>
+      <label for="inputMethodId">Analytical Method Id</label>
+      <input [disabled]="!isCreate" id="inputMethodId" required type="text" class="form-control" placeholder="analytical method id"
+        [(ngModel)]="curMethodData.analyticalMethodId" name="analyticalMethodId">
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <div class="col-md-12">
-          <label for="t-limit">Define TNTC and TFTC Limits?</label>
-          <div id="t-limit" class="row">
-            <div class="col-sm-6">
-              <label class="radio-inline">
-                <input type="radio" value="curMethodData.tLimit" [checked]="curMethodData.tLimit" (change)="curMethodData.tLimit = true" />
-                Yes
-              </label>
-            </div>
-            <div class="col-sm-6">
-              <label class="radio-inline">
-                <input type="radio" value="curMethodData.tLimit" [checked]="!curMethodData.tLimit" (change)="curMethodData.tLimit = false" />
-                No
-              </label>
-            </div>
-          </div>
-        </div>
+    <!-- Target Residue type -->
+    <div class="form-group">
+      <label for="residue-type">Target Residue Type</label>
+      <div class="select-dropdown" dropdown>
+        <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
+          aria-controls="dropdown-basic" [(ngModel)]="selectedSubstance" name="substance">
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+          <li *ngFor="let substance of Substances; index as i" role="menuitem"><a class="dropdown-item" (click)="selectResidue(substance)">{{substance}}</a></li>
+        </ul>
       </div>
     </div>
-    <div class="form-row" *ngIf="curMethodData.tLimit">
-      <div class=" form-group col-md-6">
-        <label for="TNTC-limit">TNTC Limit (in CFU)</label>
-        <input id="TNTC-limit" class="form-control" type="number" [(ngModel)]="curMethodData.TNTC" name="TNTC" required>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="TFTC-limit">TFTC Limit (in CFU)</label>
-        <input id="TFTC-limit" class="form-control" type="number" [(ngModel)]="curMethodData.TFTC" name="TFTC" required>
-      </div>
-    </div>
-  </div>
-  <!-- Swab Configurartion -->
-  <button type="button" class="btn col-md-12 form-control" [ngClass]="isSwabCollapsed ? 'lc-btn' : 'lc-btn-collapse'"
-    (click)="toggleSwab()" [attr.aria-expanded]="!isSwabCollapsed" aria-controls="collapseBasic"><i class="fa "
-      [ngClass]="isSwabCollapsed ? 'fa-plus-circle' : 'fa-minus-circle'"></i> {{swabConfigure}} swab sampling
-    parameters
-  </button>
-  <hr>
-  <div *ngIf="!isSwabCollapsed" class="card card-block card-header">
-    <!-- Swab config for API & Cleaning angent -->
+    <!-- LOD and LOQ (API &  Cleaning angent) -->
     <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
-      <div class="form-group">
-        <p>Method used</p>
-        <input type="text" class="form-control" placeholder="method" [(ngModel)]="curMethodData.SwabSample.usedMethod"
-          name="swabMethod" required>
-      </div>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <p>Solvent name</p>
-          <input type="text" class="form-control" placeholder="Solvent name" [(ngModel)]="curMethodData.SwabSample.solventName"
-            name="swabSolventName" required>
+          <p>LOD (in ppm)</p>
+          <input type="number" class="form-control" [(ngModel)]="curMethodData.LOD" name="LOD" required>
         </div>
-        <div class="form group col-md-6">
-          <p>Solvent quantity (ml)</p>
-          <input type="number" class="form-control" placeholder="solvent quantity" [(ngModel)]="curMethodData.SwabSample.solventQuantity"
-            name="swabSolventQuantity" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <p>Default recovery (%)</p>
-        <input type="number" class="form-control" placeholder="default recovery" [(ngModel)]="curMethodData.SwabSample.defaultRecovery"
-          name="swabDefaultRecovery" required>
-      </div>
-    </div>
-    <!-- Swab config for Bioburden & Endotoxin -->
-    <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
-      <div class="form-row">
-        <div class=" form-group col-md-6">
-          <label for="solvent-vol">Use Recovery for Swab</label>
-          <div id="t-limit" class="row">
-            <div class="col-sm-6">
-              <label class="radio-inline">
-                <input type="radio" value="curMethodData.SwabSample.isSwabRecovery" [checked]="curMethodData.SwabSample.isSwabRecovery"
-                  (change)="curMethodData.SwabSample.isSwabRecovery = true" />
-                Yes
-              </label>
-            </div>
-            <div class="col-sm-6">
-              <label class="radio-inline">
-                <input type="radio" value="curMethodData.SwabSample.isSwabRecovery" [checked]="!curMethodData.SwabSample.isSwabRecovery"
-                  (change)="curMethodData.SwabSample.isSwabRecovery = false" />
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="form-group col-md-6" *ngIf="curMethodData.SwabSample.isSwabRecovery">
-          <label for="solvent-vol">Recovery (%)</label>
-          <input id="solvent-vol" class="form-control" type="number" [(ngModel)]="curMethodData.SwabSample.swabRecovery"
-            name="swabRecovery" required>
+        <div class="form-group col-md-6">
+          <p>LOQ (in ppm)</p>
+          <input type="number" class="form-control" [(ngModel)]="curMethodData.LOQ" name="LOQ" required>
         </div>
       </div>
     </div>
-    <button *ngIf="!isMocAdded" (click)="addMOC()" type="button" class="btn lc-btn col-md-12 form-control"
-      [attr.aria-expanded]="!isMocAdded" aria-controls="collapseBasic"><i class="fa fa-plus-circle"></i> Add
-      MOC</button>
-    <hr>
-    <div *ngIf="curMethodData.SwabSample.moc.length > 0" class="card card-block card-header">
-      <div class="form-row">
-        <div class="form-group col-md-5">
-          <p>Select MOC</p>
-          <!-- <input class="form-control" id="MOCtype" type="text" required> -->
-        </div>
-        <div class="form-group col-md-5">
-          <p for="MOCtype">Recovery (%)</p>
-          <!-- <input class="form-control" id="MOCtype" type="number" required> -->
-        </div>
-      </div>
-      <div class="form-row" *ngFor="let moc of curMethodData.SwabSample.moc; index as m">
-        <div class="form-group col-md-5">
-          <!-- <input class="form-control" id="MOCtype" type="text" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType"
-            name="mocType-{{m}}" required> -->
-          <div class="select-dropdown" dropdown>
-            <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
-              aria-controls="dropdown-basic" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType" name="mocType-{{m}}">
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li *ngFor="let moc of MOCList; index as i" role="menuitem"><a class="dropdown-item" (click)="selectMocType(moc, m)">{{moc}}</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="form-group col-md-5">
-          <input class="form-control" id="recovery" type="number" [(ngModel)]="moc.recovery" name="recovery-{{m}}"
-            required>
-        </div>
-        <div class="form-group col-md-1">
-          <button (click)="removeMOC(moc, m)" type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </div>
-      <button *ngIf="curMethodData.SwabSample.moc.length > 0" (click)="addMOC()" type="button" class="btn col-md-12 form-control">
-        <i class="fa fa-plus-circle"></i> Add another or Create a new MOC</button>
-    </div>
-  </div>
-  <!-- Rinse Configurartion -->
-  <button type="button" class="btn col-md-12 form-control" [ngClass]="isRinseCollapsed ? 'lc-btn' : 'lc-btn-collapse'"
-    (click)="toggleRinse()" [attr.aria-expanded]="!isRinseCollapsed" aria-controls="collapseBasic"><i class="fa"
-      [ngClass]="isRinseCollapsed ? 'fa-plus-circle' : 'fa-minus-circle'"></i> {{rinseConfigure}} rinse sampling
-    parameters
-  </button>
-  <hr>
-  <div id="collapseBasic" *ngIf="!isRinseCollapsed" class="card card-block card-header">
-    <!-- Rinse config for API & Cleaning angent -->
-    <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
-      <div class="form-group">
-        <p>Method used</p>
-        <input type="text" class="form-control" placeholder="method" [(ngModel)]="curMethodData.RinseSample.usedMethod"
-          name="RinseMethod" required>
-      </div>
-      <div class="form-group">
-        <p>Default recovery (%)</p>
-        <input type="number" class="form-control" placeholder="default recovery" [(ngModel)]="curMethodData.RinseSample.defaultRecovery"
-          name="RinseDefaultRecovery" required>
-      </div>
-    </div>
-    <!-- Rinse config for Bioburden & Endotoxin -->
+    <!-- TNTC and TFTC limits (Bioburden & Endotoxin) -->
     <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
       <div class="form-group">
-        <label for="solvent-vol">Solvent Volume</label>
-        <input id="solvent-vol" class="form-control" type="number" [(ngModel)]="curMethodData.RinseSample.rinseSolventVolume"
-          name="rinseSolventVolume" required>
+        <label for="used-method">Method used</label>
+        <input type="text" class="form-control" [(ngModel)]="curMethodData.usedMethod" name="usedMethod" required>
       </div>
       <div class="form-row">
+        <div class="form-group">
+          <div class="col-md-12">
+            <label for="t-limit">Define TNTC and TFTC Limits?</label>
+            <div id="t-limit" class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" value="curMethodData.tLimit" [checked]="curMethodData.tLimit" (change)="curMethodData.tLimit = true" />
+                  Yes
+                </label>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" value="curMethodData.tLimit" [checked]="!curMethodData.tLimit" (change)="curMethodData.tLimit = false" />
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="curMethodData.tLimit">
         <div class=" form-group col-md-6">
-          <label for="solvent-vol">Use Recovery for Rinse</label>
-          <div id="t-limit" class="row">
-            <div class="col-sm-6">
-              <label class="radio-inline">
-                <input type="radio" value="curMethodData.RinseSample.isRinseRecovery" [checked]="curMethodData.RinseSample.isRinseRecovery"
-                  (change)="curMethodData.RinseSample.isRinseRecovery = true" />
-                Yes
-              </label>
-            </div>
-            <div class="col-sm-6">
-              <label class="radio-inline">
-                <input type="radio" value="curMethodData.RinseSample.isRinseRecovery" [checked]="!curMethodData.RinseSample.isRinseRecovery"
-                  (change)="curMethodData.RinseSample.isRinseRecovery = false" />
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="form-group col-md-6" *ngIf="curMethodData.RinseSample.isRinseRecovery">
-          <label for="solvent-vol">Default Recovery (%)</label>
-          <input id="solvent-vol" class="form-control" type="number" [(ngModel)]="curMethodData.RinseSample.rinseRecovery"
-            name="rinseRecovery" required>
-        </div>
-      </div>
-    </div>
-    <button *ngIf="!isRinseMocAdded" (click)="addRinseMOC()" type="button" class="btn lc-btn col-md-12 form-control"
-      [attr.aria-expanded]="!isRinseMocAdded" aria-controls="collapseBasic"><i class="fa fa-plus-circle"></i> Add
-      MOC</button>
-    <hr>
-    <div *ngIf="curMethodData.RinseSample.moc.length > 0" class="card card-block card-header">
-      <div class="form-row">
-        <div class="form-group col-md-5">
-          <p>Select MOC</p>
-          <!-- <input class="form-control" id="MOCtype" type="text" required> -->
-        </div>
-        <div class="form-group col-md-5">
-          <p for="MOCtype">Recovery (%)</p>
-          <!-- <input class="form-control" id="MOCtype" type="number" required> -->
-        </div>
-      </div>
-      <div class="form-row" *ngFor="let moc of curMethodData.RinseSample.moc; index as m">
-        <div class="form-group col-md-5">
-          <!-- <input class="form-control" id="MOCtype" type="text" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType"
-            name="mocType-{{m}}" required> -->
-          <div class="select-dropdown" dropdown>
-            <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
-              aria-controls="dropdown-basic" [(ngModel)]="curMethodData.RinseSample.moc[m].mocType" name="RinsemocType-{{m}}">
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li *ngFor="let moc of MOCList; index as i" role="menuitem"><a class="dropdown-item" (click)="selectRinseMocType(moc, m)">{{moc}}</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="form-group col-md-5">
-          <input class="form-control" id="recovery" type="number" [(ngModel)]="moc.recovery" name="recovery-{{m}}"
+          <label for="TNTC-limit">TNTC Limit (in CFU)</label>
+          <input id="TNTC-limit" class="form-control" type="number" [(ngModel)]="curMethodData.TNTC" name="TNTC"
             required>
         </div>
-        <div class="form-group col-md-1">
-          <button (click)="removeRinseMOC(moc, m)" type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="form-group col-md-6">
+          <label for="TFTC-limit">TFTC Limit (in CFU)</label>
+          <input id="TFTC-limit" class="form-control" type="number" [(ngModel)]="curMethodData.TFTC" name="TFTC"
+            required>
         </div>
       </div>
-      <button *ngIf="curMethodData.RinseSample.moc.length > 0" (click)="addRinseMOC()" type="button" class="btn col-md-12 form-control">
-        <i class="fa fa-plus-circle"></i> Add another or Create a new MOC</button>
+    </div>
+    <!-- Swab Configurartion -->
+    <button type="button" class="btn col-md-12 form-control" [ngClass]="isSwabCollapsed ? 'lc-btn' : 'lc-btn-collapse'"
+      (click)="toggleSwab()" [attr.aria-expanded]="!isSwabCollapsed" aria-controls="collapseBasic"><i class="fa "
+        [ngClass]="isSwabCollapsed ? 'fa-plus-circle' : 'fa-minus-circle'"></i> {{swabConfigure}} swab sampling
+      parameters
+    </button>
+    <hr>
+    <div *ngIf="!isSwabCollapsed" class="card card-block card-header">
+      <!-- Swab config for API & Cleaning angent -->
+      <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
+        <div class="form-group">
+          <p>Method used</p>
+          <input type="text" class="form-control" placeholder="method" [(ngModel)]="curMethodData.SwabSample.usedMethod"
+            name="swabMethod" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <p>Solvent name</p>
+            <input type="text" class="form-control" placeholder="Solvent name" [(ngModel)]="curMethodData.SwabSample.solventName"
+              name="swabSolventName" required>
+          </div>
+          <div class="form group col-md-6">
+            <p>Solvent quantity (ml)</p>
+            <input type="number" class="form-control" placeholder="solvent quantity" [(ngModel)]="curMethodData.SwabSample.solventQuantity"
+              name="swabSolventQuantity" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>Default recovery (%)</p>
+          <input type="number" class="form-control" placeholder="default recovery" [(ngModel)]="curMethodData.SwabSample.defaultRecovery"
+            name="swabDefaultRecovery" required>
+        </div>
+      </div>
+      <!-- Swab config for Bioburden & Endotoxin -->
+      <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
+        <div class="form-row">
+          <div class=" form-group col-md-6">
+            <label for="solvent-vol">Use Recovery for Swab</label>
+            <div id="t-limit" class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" value="curMethodData.SwabSample.isSwabRecovery" [checked]="curMethodData.SwabSample.isSwabRecovery"
+                    (change)="curMethodData.SwabSample.isSwabRecovery = true" />
+                  Yes
+                </label>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" value="curMethodData.SwabSample.isSwabRecovery" [checked]="!curMethodData.SwabSample.isSwabRecovery"
+                    (change)="curMethodData.SwabSample.isSwabRecovery = false" />
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6" *ngIf="curMethodData.SwabSample.isSwabRecovery">
+            <label for="solvent-vol">Recovery (%)</label>
+            <input id="solvent-vol" class="form-control" type="number" [(ngModel)]="curMethodData.SwabSample.swabRecovery"
+              name="swabRecovery" required>
+          </div>
+        </div>
+      </div>
+      <button *ngIf="!isMocAdded" (click)="addMOC()" type="button" class="btn lc-btn col-md-12 form-control"
+        [attr.aria-expanded]="!isMocAdded" aria-controls="collapseBasic"><i class="fa fa-plus-circle"></i> Add
+        MOC</button>
+      <hr>
+      <div *ngIf="curMethodData.SwabSample.moc.length > 0" class="card card-block card-header">
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <p>Select MOC</p>
+            <!-- <input class="form-control" id="MOCtype" type="text" required> -->
+          </div>
+          <div class="form-group col-md-5">
+            <p for="MOCtype">Recovery (%)</p>
+            <!-- <input class="form-control" id="MOCtype" type="number" required> -->
+          </div>
+        </div>
+        <div class="form-row" *ngFor="let moc of curMethodData.SwabSample.moc; index as m">
+          <div class="form-group col-md-5">
+            <!-- <input class="form-control" id="MOCtype" type="text" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType"
+            name="mocType-{{m}}" required> -->
+            <div class="select-dropdown" dropdown>
+              <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
+                aria-controls="dropdown-basic" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType" name="mocType-{{m}}">
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li *ngFor="let moc of MOCList; index as i" role="menuitem"><a class="dropdown-item" (click)="selectMocType(moc, m)">{{moc}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-md-5">
+            <input class="form-control" id="recovery" type="number" [(ngModel)]="moc.recovery" name="recovery-{{m}}"
+              required>
+          </div>
+          <div class="form-group col-md-1">
+            <button (click)="removeMOC(moc, m)" type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <button *ngIf="curMethodData.SwabSample.moc.length > 0" (click)="addMOC()" type="button" class="btn col-md-12 form-control">
+          <i class="fa fa-plus-circle"></i> Add another or Create a new MOC</button>
+      </div>
+    </div>
+    <!-- Rinse Configurartion -->
+    <button type="button" class="btn col-md-12 form-control" [ngClass]="isRinseCollapsed ? 'lc-btn' : 'lc-btn-collapse'"
+      (click)="toggleRinse()" [attr.aria-expanded]="!isRinseCollapsed" aria-controls="collapseBasic"><i class="fa"
+        [ngClass]="isRinseCollapsed ? 'fa-plus-circle' : 'fa-minus-circle'"></i> {{rinseConfigure}} rinse sampling
+      parameters
+    </button>
+    <hr>
+    <div id="collapseBasic" *ngIf="!isRinseCollapsed" class="card card-block card-header">
+      <!-- Rinse config for API & Cleaning angent -->
+      <div *ngIf="selectedSubstance === Substances[0] || selectedSubstance === Substances[1]">
+        <div class="form-group">
+          <p>Method used</p>
+          <input type="text" class="form-control" placeholder="method" [(ngModel)]="curMethodData.RinseSample.usedMethod"
+            name="RinseMethod" required>
+        </div>
+        <div class="form-group">
+          <p>Default recovery (%)</p>
+          <input type="number" class="form-control" placeholder="default recovery" [(ngModel)]="curMethodData.RinseSample.defaultRecovery"
+            name="RinseDefaultRecovery" required>
+        </div>
+      </div>
+      <!-- Rinse config for Bioburden & Endotoxin -->
+      <div *ngIf="selectedSubstance === Substances[2] || selectedSubstance === Substances[3]">
+        <div class="form-group">
+          <label for="solvent-vol">Solvent Volume</label>
+          <input id="solvent-vol" class="form-control" type="number" [(ngModel)]="curMethodData.RinseSample.rinseSolventVolume"
+            name="rinseSolventVolume" required>
+        </div>
+        <div class="form-row">
+          <div class=" form-group col-md-6">
+            <label for="solvent-vol">Use Recovery for Rinse</label>
+            <div id="t-limit" class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" value="curMethodData.RinseSample.isRinseRecovery" [checked]="curMethodData.RinseSample.isRinseRecovery"
+                    (change)="curMethodData.RinseSample.isRinseRecovery = true" />
+                  Yes
+                </label>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" value="curMethodData.RinseSample.isRinseRecovery" [checked]="!curMethodData.RinseSample.isRinseRecovery"
+                    (change)="curMethodData.RinseSample.isRinseRecovery = false" />
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6" *ngIf="curMethodData.RinseSample.isRinseRecovery">
+            <label for="solvent-vol">Default Recovery (%)</label>
+            <input id="solvent-vol" class="form-control" type="number" [(ngModel)]="curMethodData.RinseSample.rinseRecovery"
+              name="rinseRecovery" required>
+          </div>
+        </div>
+      </div>
+      <button *ngIf="!isRinseMocAdded" (click)="addRinseMOC()" type="button" class="btn lc-btn col-md-12 form-control"
+        [attr.aria-expanded]="!isRinseMocAdded" aria-controls="collapseBasic"><i class="fa fa-plus-circle"></i> Add
+        MOC</button>
+      <hr>
+      <div *ngIf="curMethodData.RinseSample.moc.length > 0" class="card card-block card-header">
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <p>Select MOC</p>
+            <!-- <input class="form-control" id="MOCtype" type="text" required> -->
+          </div>
+          <div class="form-group col-md-5">
+            <p for="MOCtype">Recovery (%)</p>
+            <!-- <input class="form-control" id="MOCtype" type="number" required> -->
+          </div>
+        </div>
+        <div class="form-row" *ngFor="let moc of curMethodData.RinseSample.moc; index as m">
+          <div class="form-group col-md-5">
+            <!-- <input class="form-control" id="MOCtype" type="text" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType"
+            name="mocType-{{m}}" required> -->
+            <div class="select-dropdown" dropdown>
+              <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
+                aria-controls="dropdown-basic" [(ngModel)]="curMethodData.RinseSample.moc[m].mocType" name="RinsemocType-{{m}}">
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li *ngFor="let moc of MOCList; index as i" role="menuitem"><a class="dropdown-item" (click)="selectRinseMocType(moc, m)">{{moc}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-md-5">
+            <input class="form-control" id="recovery" type="number" [(ngModel)]="moc.recovery" name="recovery-{{m}}"
+              required>
+          </div>
+          <div class="form-group col-md-1">
+            <button (click)="removeRinseMOC(moc, m)" type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <button *ngIf="curMethodData.RinseSample.moc.length > 0" (click)="addRinseMOC()" type="button" class="btn col-md-12 form-control">
+          <i class="fa fa-plus-circle"></i> Add another or Create a new MOC</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="solvent-vol">Reason</label>
+      <input type="text" class="form-control" [(ngModel)]="curMethodData.reason" name="reason" required>
     </div>
   </div>
-  <div class="form-group">
-    <label for="solvent-vol">Reason</label>
-    <input type="text" class="form-control" [(ngModel)]="curMethodData.reason" name="reason" required>
+  <div class="btn-group-justified" style="padding-top: 8px">
+    <button [disabled]="!f.form.valid" type="submit" *ngIf="isCreate" class="btn btn-primary pull-right">Save</button>
+    <button [disabled]="!f.form.valid" type="submit" *ngIf="!isCreate" class="btn btn-primary pull-right">Update</button>
+    <button class="btn btn-primary pull-left" (click)="cancel()">Cancel</button>
   </div>
 </form>
-<div class="btn-group-justified" style="padding-top: 8px">
-  <button [disabled]="!f.form.valid" type="submit" *ngIf="isCreate" class="btn btn-primary pull-right">Save</button>
-  <button [disabled]="!f.form.valid" type="submit" *ngIf="!isCreate" class="btn btn-primary pull-right">Update</button>
-  <button class="btn btn-primary pull-left" (click)="cancel()">Cancel</button>
-</div>

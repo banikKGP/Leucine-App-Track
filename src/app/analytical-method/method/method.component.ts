@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AnalyticalService } from '../analytical.service';
 
+declare var $: any;
+
 @Component({
   selector: 'app-method',
   templateUrl: './method.component.html',
@@ -8,37 +10,38 @@ import { AnalyticalService } from '../analytical.service';
 })
 export class MethodComponent implements OnInit {
 
-  analyticalMethods:any[];
+  analyticalMethods: any[];
+  height: number;
   constructor(private analyticalService: AnalyticalService) {
-
+    setTimeout(() => this.heightCalculation(), 200);
   }
 
-  // @HostListener('click')
-  // click(){
-  //   this.analyticalService.toggle();
-  // }
-
   ngOnInit() {
-    this.analyticalService.updateStorage.subscribe(()=>{
+    this.analyticalService.updateStorage.subscribe(() => {
       this.analyticalMethods = this.getAnalyticalMethods();
-    })
+    });
     this.analyticalMethods = this.getAnalyticalMethods();
     this.createAnalyticalMethod();
   }
 
-  getAnalyticalMethods(){
-    let keys = [];
-    for (let i=0; i<localStorage.length; i++){
+  heightCalculation() {
+    const cheight = $('.container').height();
+    this.height = (cheight - 149 - 34);
+  }
+
+  getAnalyticalMethods() {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
       keys.push(localStorage.key(i));
    }
     return keys;
   }
 
-  editAnalyticalMethod(method: any){
-    this.analyticalService.editMethodData(method)
+  editAnalyticalMethod(method: any) {
+    this.analyticalService.editMethodData(method);
   }
 
-  createAnalyticalMethod(){
+  createAnalyticalMethod() {
     this.analyticalService.createMethodData();
   }
 

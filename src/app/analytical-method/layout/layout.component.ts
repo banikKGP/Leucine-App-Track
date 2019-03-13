@@ -17,7 +17,7 @@ export class LayoutComponent implements OnInit {
   }
   heightCalculation() {
     const winHeight = $(window).height();
-    this.height = (winHeight - 120);
+    this.height = (winHeight - 90);
   }
 
 }

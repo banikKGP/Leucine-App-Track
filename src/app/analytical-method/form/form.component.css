@@ -28,7 +28,10 @@
 }
 
 form {
-  overflow-y: scroll;
-  overflow-x: hidden;
   width: 710px;
+}
+
+.scrollable-content {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
