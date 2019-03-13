@@ -27,6 +27,15 @@
   text-align: left;
 }
 
+.select-dropdown .fa-caret-down {
+    position: absolute;
+    top: 10px;
+    left: 675px;
+}
+
+
+
+
 form {
   width: 710px;
 }

@@ -12,6 +12,7 @@
       <div class="select-dropdown" dropdown>
         <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
           aria-controls="dropdown-basic" [(ngModel)]="selectedSubstance" name="substance">
+          <i class="fa fa-caret-down"></i>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
           <li *ngFor="let substance of Substances; index as i" role="menuitem"><a class="dropdown-item" (click)="selectResidue(substance)">{{substance}}</a></li>
         </ul>
@@ -152,9 +153,10 @@
             <!-- <input class="form-control" id="MOCtype" type="text" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType"
             name="mocType-{{m}}" required> -->
             <div class="select-dropdown" dropdown>
-              <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
+              <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle left-caret"
                 aria-controls="dropdown-basic" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType" name="mocType-{{m}}">
-              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <i class="fa left-caret fa-caret-down" style="left:220px"></i>
+                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                 <li *ngFor="let moc of MOCList; index as i" role="menuitem"><a class="dropdown-item" (click)="selectMocType(moc, m)">{{moc}}</a></li>
               </ul>
             </div>
@@ -248,8 +250,9 @@
             <!-- <input class="form-control" id="MOCtype" type="text" [(ngModel)]="curMethodData.SwabSample.moc[m].mocType"
             name="mocType-{{m}}" required> -->
             <div class="select-dropdown" dropdown>
-              <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle"
+              <input required type="button" id="button-basic" dropdownToggle class="form-control dropdown-toggle left-caret"
                 aria-controls="dropdown-basic" [(ngModel)]="curMethodData.RinseSample.moc[m].mocType" name="RinsemocType-{{m}}">
+                <i class="fa fa-caret-down" style="left:220px"></i>
               <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                 <li *ngFor="let moc of MOCList; index as i" role="menuitem"><a class="dropdown-item" (click)="selectRinseMocType(moc, m)">{{moc}}</a></li>
               </ul>
