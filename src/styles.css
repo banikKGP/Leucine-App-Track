@@ -4,4 +4,9 @@
 
 .jumbotron {
     padding: 6rem 2rem !important;
+    width: 1144px;
+}
+
+body {
+  overflow: hidden;
 }
